@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { join } from 'path'
 import { createBot, createProvider, createFlow, addKeyword, utils } from '@builderbot/bot'
 import { MemoryDB as Database } from '@builderbot/bot'
@@ -61,10 +62,10 @@ const fullSamplesFlow = addKeyword<Provider, Database>(['samples', utils.setEven
 const main = async () => {
     const adapterFlow = createFlow([welcomeFlow, registerFlow, fullSamplesFlow])
     const adapterProvider = createProvider(Provider, {
-        jwtToken: 'jwtToken',
-        numberId: 'numberId',
-        verifyToken: 'verifyToken',
-        version: 'v18.0'
+        jwtToken: process.env.JWT_TOKEN,
+        numberId: process.env.NUMBER_ID,
+        verifyToken: process.env.VERIFY_TOKEN,
+        version: process.env.VERSION
     })
     const adapterDB = new Database()
 
