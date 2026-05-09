@@ -1,44 +1,210 @@
-<p align="center">
-  <a href="https://builderbot.app/">
-    <picture>
-      <img src="https://builderbot.app/assets/thumbnail-vector.png" height="80">
-    </picture>
-    <h2 align="center">BuilderBot</h2>
-  </a>
-</p>
+# WhatsApp Bot (BuilderBot + Meta Cloud API)
 
+Este proyecto es un bot de WhatsApp construido con BuilderBot + TypeScript + Meta WhatsApp Cloud API.
 
+---
 
-<p align="center">
-  <a aria-label="NPM version" href="https://www.npmjs.com/package/@builderbot/bot">
-    <img alt="" src="https://img.shields.io/npm/v/@builderbot/bot?color=%2300c200&label=%40bot-whatsapp">
-  </a>
-  <a aria-label="Join the community on GitHub" href="https://link.codigoencasa.com/DISCORD">
-    <img alt="" src="https://img.shields.io/discord/915193197645402142?logo=discord">
-  </a>
-</p>
+## 🚀 Requisitos
 
+Antes de empezar asegúrate de tener:
 
-## Getting Started
+- Node.js 18 o 20 (LTS recomendado)
+- npm o yarn
+- Cuenta en Meta Developers
+- App creada con WhatsApp Cloud API
+- Número de WhatsApp Business configurado
 
-With this library, you can build automated conversation flows agnostic to the WhatsApp provider, set up automated responses for frequently asked questions, receive and respond to messages automatically, and track interactions with customers. Additionally, you can easily set up triggers to expand functionalities limitlessly.
+---
 
-```
-npm create builderbot@latest
-```
+## 📦 Instalación
 
+Clonar el proyecto:
 
-## Documentation
+git clone <TU_REPO>  
+cd whatsapp-bot-test  
 
-Visit [builderbot](https://builderbot.app/) to view the full documentation.
+Instalar dependencias:
 
+npm install  
 
-## Official Course
+---
 
-If you want to discover all the functions and features offered by the library you can take the course.
-[View Course](https://app.codigoencasa.com/courses/builderbot?refCode=LEIFER)
+## ⚙️ Configuración del entorno
 
+El proyecto incluye un archivo de ejemplo:
 
-## Contact Us
-- [💻 Discord](https://link.codigoencasa.com/DISCORD)
-- [👌 𝕏 (Twitter)](https://twitter.com/leifermendez)
+.env.example
+
+Cópialo a .env:
+
+En Linux / Mac:
+
+cp .env.example .env  
+
+En Windows:
+
+copy .env.example .env  
+
+---
+
+## 🔑 Variables de entorno
+
+Edita el archivo .env con tus credenciales de Meta:
+
+PORT=3008  
+META_TOKEN=TU_ACCESS_TOKEN_DE_META  
+META_VERIFY_TOKEN=tu_verify_token_personal  
+META_PHONE_NUMBER_ID=TU_PHONE_NUMBER_ID  
+META_VERSION=v22.0  
+JWT_TOKEN=un_string_secreto_aleatorio  
+
+---
+
+## 📲 Configuración en Meta Developers
+
+### 1. Crear App
+
+Ir a:
+https://developers.facebook.com/
+
+- Crear nueva app
+- Tipo: Business
+
+---
+
+### 2. Agregar WhatsApp
+
+- Add Product
+- Seleccionar WhatsApp
+- Activar Cloud API
+
+---
+
+### 3. Obtener credenciales
+
+En WhatsApp > API Setup:
+
+- Temporary Access Token → META_TOKEN
+- Phone Number ID → META_PHONE_NUMBER_ID
+
+---
+
+### 4. Configurar Webhook
+
+WhatsApp > Configuration
+
+Callback URL:
+
+https://TU_DOMINIO/webhook
+
+---
+
+## 🌐 Exponer servidor local (OBLIGATORIO)
+
+Meta necesita acceder a tu bot desde internet.
+
+---
+
+### 🟢 Opción 1: ngrok (RECOMENDADO)
+
+Instalación:
+
+npm install -g ngrok  
+
+Ejecutar bot:
+
+npm run dev  
+
+En otra terminal:
+
+ngrok http 3008  
+
+Ejemplo de URL generada:
+
+https://abcd-1234.ngrok-free.app  
+
+Webhook en Meta:
+
+https://abcd-1234.ngrok-free.app/webhook  
+
+---
+
+### 🟡 Opción 2: VS Code Port Forwarding
+
+- Abrir pestaña “Ports”
+- Forward port 3008
+- Usar URL pública generada
+
+⚠️ No recomendado para Webhooks de Meta en producción (puede cambiar o fallar en POST).
+
+---
+
+## 🔁 Verify Token
+
+Debe coincidir con tu .env:
+
+META_VERIFY_TOKEN=mi_token_verify  
+
+---
+
+### 5. Suscribir eventos
+
+Activar:
+
+- messages
+- message_status
+
+---
+
+## ▶️ Ejecutar el proyecto
+
+Modo desarrollo:
+
+npm run dev  
+
+---
+
+## 🧪 Pruebas locales
+
+Flujo recomendado:
+
+1. Levantar bot (`npm run dev`)
+2. Exponer con ngrok
+3. Configurar webhook en Meta
+4. Enviar mensaje desde WhatsApp
+5. Ver logs en consola
+
+---
+
+## 📌 Estructura del proyecto
+
+src/  
+ ├── app.ts  
+ ├── flows/  
+ ├── providers/  
+ ├── services/  
+ ├── routes/  
+ ├── utils/  
+
+---
+
+## ❗ Errores comunes
+
+### Invalid OAuth access token
+
+- El META_TOKEN es incorrecto o expirado
+- Debe empezar con EAAG...
+
+---
+
+### Webhook no responde
+
+- ngrok apagado
+- URL incorrecta
+- verify token no coincide
+
+---
+
+### Phone Number ID inválido
+
+- Verificar en Meta Developers
